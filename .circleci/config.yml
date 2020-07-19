@@ -17,7 +17,7 @@ jobs:
     steps:
       - run: |
           echo $GCP_PROJECT_KEY > encoded_key
-          cat encoded_key | base64 -d
+          cat encoded_key | base64 -di > key.json
           gcloud auth activate-service-account --key-file=key.json
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
           gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
