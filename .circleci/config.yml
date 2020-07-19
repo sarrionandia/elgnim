@@ -25,5 +25,6 @@ workflows:
     jobs:
       - build-and-test
       - deploy:
+          context: elgnim-prod
           requires:
             - build-and-test
