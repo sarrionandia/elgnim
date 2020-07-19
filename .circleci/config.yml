@@ -11,19 +11,19 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
-  push-to-gcloud:
-    machine:
-      image: ubuntu-1604:201903-01
+  deploy:
+    docker:
+      - image: google/cloud-sdk
     steps:
-      - run: echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-      - run: sudo apt-get install apt-transport-https ca-certificates gnupg
-      - run: curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-      - run: sudo apt-get update && sudo apt-get install google-cloud-sdk
-
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          gcloud app deploy
 workflows:
   ci:
     jobs:
       - build-and-test
-      - push-to-gcloud:
+      - deploy:
           requires:
             - build-and-test
