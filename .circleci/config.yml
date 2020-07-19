@@ -13,10 +13,10 @@ jobs:
             - run: npm install
             - run: npm test
   push-to-gcloud:
-      executor: gcp-cli/default
-      steps:
-        - install_and_initialize_cli
-        - run: gcloud app deploy
+    executor: gcp-cli/default
+    steps:
+      - install_and_initialize_cli
+      - run: gcloud app deploy
 
 workflows:
   build-and-test:
