@@ -10,7 +10,7 @@
     "mocha": "^8.0.1"
   },
   "scripts": {
-    "test": "npm test",
+    "test": "mocha",
     "start": "node src/server.js"
   },
   "repository": {
